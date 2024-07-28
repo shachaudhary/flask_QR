@@ -41,7 +41,7 @@ Installation
 
     bash
 
-git clone https://github.com/yourusername/flask_user.git
+git clone https://github.com/shachaudhary/flask_user.git
 cd flask_user
 
 Set Up a Virtual Environment:
