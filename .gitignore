@@ -1,0 +1,39 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyd
+*.pyc
+
+# Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Flask
+instance/
+*.db
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# dotenv
+.env
+*.env
+
+# Config
+config.py
+
+# Migrations
+migrations/
