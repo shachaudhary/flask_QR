@@ -1,28 +1,29 @@
-# flask_user
+Flask QR Code Application
 
-Flask User Authentication System
-
-This Flask application provides user authentication features including registration and login. It uses Flask, Flask-SQLAlchemy, Flask-Migrate, and Flask-Login to manage user accounts and sessions.
+This Flask application provides user authentication features and QR code generation with tracking capabilities. It uses Flask, Flask-SQLAlchemy, Flask-Migrate, and Flask-Login to manage user accounts, sessions, and QR code functionalities.
 Features
 
     User Registration: Allows users to create an account with a username, email, and password.
     User Login: Allows users to log into their account.
-    Dashboard: Redirects users to a dashboard page upon successful login.
+    Dashboard: Redirects users to a dashboard page upon successful login, where they can generate and view QR codes.
+    QR Code Generation: Allows users to generate QR codes for URLs.
+    QR Code Tracking: Tracks visits to QR code links and records them.
     Responsive Navbar: Includes links for login, registration, and logout.
 
 Project Structure
 
     app/ - Contains application code:
         __init__.py - Initializes the Flask application, database, and login manager.
-        models.py - Defines the database models.
-        forms.py - Contains form definitions for registration and login.
+        models.py - Defines the database models, including QR code tracking.
+        forms.py - Contains form definitions for registration, login, and QR code generation.
         routes.py - Defines the routes and view functions.
         templates/ - Contains HTML templates:
             base.html - Base template with navbar.
-            index.html - Home page template.
+            index.html - Home page template with QR code generation form.
             login.html - Login page template.
             register.html - Registration page template.
-        static/ - Contains static files like CSS.
+            dashboard.html - Dashboard page with QR code management.
+        static/ - Contains static files like CSS and JavaScript.
 
     migrations/ - Contains migration scripts for the database.
 
@@ -34,15 +35,14 @@ Project Structure
 
     run.py - Entry point to run the application.
 
-
 Installation
 
     Clone the Repository:
 
     bash
 
-git clone https://github.com/shachaudhary/flask_user.git
-cd flask_user
+git clone https://github.com/shachaudhary/flask_QR.git
+cd flask_QR
 
 Set Up a Virtual Environment:
 
@@ -58,9 +58,10 @@ bash
 pip install -r requirements.txt
 
 Set Up the Database:
-Create a .env file with the following content:
 
-makefile
+    Create a .env file with the following content:
+
+    env
 
 FLASK_APP=run.py
 FLASK_ENV=development
@@ -71,9 +72,9 @@ Initialize the database and create the initial migration:
 
 bash
 
-flask db init
-flask db migrate -m "Initial migration."
-flask db upgrade
+    flask db init
+    flask db migrate -m "Initial migration."
+    flask db upgrade
 
 Run the Application:
 
@@ -87,8 +88,4 @@ Usage
 
     Register: Visit /register to create a new account.
     Login: Visit /login to access your account.
-    Dashboard: After logging in, you will be redirected to /dashboard.
-
-Contributing
-
-Feel free to fork the repository and submit pull requests. Report bugs or suggest improvements by opening an issue.
+    Dashboard: After logging in, you will be redirected to /dashboard, where you can generate and view QR codes.
