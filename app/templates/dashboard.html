@@ -1,8 +1,92 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>Welcome to Your Dashboard, {{ current_user.username }}!</h1>
-<p>This is the dashboard where you can manage your account and view your details.</p>
+    <h1>Dashboard</h1>
+    
+    <!-- Form Container -->
+    <div class="container mt-4 p-4 bg-light rounded">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">https://</span>
+                </div>
+                {{ form.link(class="form-control") }}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+
+     <!-- Flash Messages -->
+     {% with messages = get_flashed_messages(with_categories=true) %}
+     {% if messages %}
+         <div class="container mt-3">
+             {% for category, message in messages %}
+                 <div class="alert alert-{{ category }}">
+                     {{ message }}
+                 </div>
+             {% endfor %}
+         </div>
+     {% endif %}
+    {% endwith %}
+    
+    {% if qr_code_image %}
+    <div class="qr-code-container text-center mt-4">
+        <h3>Your QR Code:</h3>
+        <img src="{{ qr_code_image }}" id="qr-code-image" class="img-fluid" alt="QR Code">
+        <br><br>
+            <button class="btn btn-secondary" id="save-image-button">Save Image</button>
+            <p id="save-notification" class="mt-2 text-muted"></p> <!-- Placeholder for notification -->
+    </div>
+    {% endif %}
+
+    {% if qr_links %}
+        <h2>Your QR Codes</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Link</th>
+                    <th>Date Created</th>
+                    <th>Visits</th>
+                    <th>Actions</th> <!-- Added column for actions -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for qr_link in qr_links %}
+                    <tr>
+                        <td>{{ qr_link.link }}</td>
+                        <td>{{ qr_link.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ qr_link.visits|length }}</td>
+                        <td>
+                            <!-- Delete Button -->
+                            <form action="{{ url_for('main.delete_qr_link', qr_link_id=qr_link.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+{% block script %}
+<!-- JavaScript to handle saving the image -->
+<script>
+    document.getElementById('save-image-button').addEventListener('click', function() {
+        const img = document.getElementById('qr-code-image');
+        const url = img.src;
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'qr_code.png';  // Default filename for the downloaded image
+
+        // Append the anchor to the body and trigger a click event
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Show notification
+        const notification = document.getElementById('save-notification');
+        notification.textContent = 'The image has been saved to your default downloads folder.';
+    });
+</script>
 {% endblock %}

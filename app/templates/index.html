@@ -1,8 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}QR Code{% endblock %}
 
 {% block content %}
-    <h1>Welcome to My Flask App</h1>
-    <p>This is the home page.</p>
+    <h1>Generate QR Code</h1>
+    <h4>Register to Generate QR Code with Tracking</h4>
+
+    <!-- Form Container -->
+    <div class="container mt-4 p-4 bg-light rounded">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">https://</span>
+                </div>
+                {{ form.link(class="form-control") }}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+
+    {% if qr_code_url %}
+        <!-- QR Code Container -->
+        <div class="container mt-4 p-4 bg-light rounded">
+            <h2>Generated QR Code:</h2>
+            <img src="{{ qr_code_url }}" alt="QR Code" id="qr-code-image" class="img-fluid">
+            <br><br>
+            <button class="btn btn-secondary" id="save-image-button">Save Image</button>
+            <p id="save-notification" class="mt-2 text-muted"></p> <!-- Placeholder for notification -->
+        </div>
+    {% endif %}
+
+{% endblock %}
+{% block script %}
+<!-- JavaScript to handle saving the image -->
+<script>
+    document.getElementById('save-image-button').addEventListener('click', function() {
+        const img = document.getElementById('qr-code-image');
+        const url = img.src;
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'qr_code.png';  // Default filename for the downloaded image
+
+        // Append the anchor to the body and trigger a click event
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Show notification
+        const notification = document.getElementById('save-notification');
+        notification.textContent = 'The image has been saved to your default downloads folder.';
+    });
+</script>
 {% endblock %}

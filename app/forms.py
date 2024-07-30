@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.validators import DataRequired, Email, EqualTo, Length, URL
 
 
 class RegistrationForm(FlaskForm):
@@ -15,3 +15,7 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class QRCodeForm(FlaskForm):
+    link = StringField('Enter URL:', validators=[DataRequired(), URL(message="Invalid URL")], render_kw={"placeholder": "www.example.com"})
+    submit = SubmitField('Generate QR Code')
